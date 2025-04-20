@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Notepad</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .password-container {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-r from-blue-100 to-green-100 h-screen flex items-center justify-center">
+    {% load static %}
+    <div class="bg-white p-12 rounded-xl shadow-2xl w-full max-w-md">
+        <h1 class="text-3xl font-extrabold mb-8 text-center text-gray-800">🔒 Secure Notepad</h1>
+
+        <div id="note-selector" class="mb-6">
+            <label for="noteId" class="block text-gray-700 text-sm font-bold mb-2">Note Name:</label>
+            <input type="text" id="noteId" placeholder="e.g., my-secret-note" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4">
+            <button onclick="loadOrCreateNote()" class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-3 px-6 rounded-xl focus:outline-none focus:shadow-outline transition duration-300">Load / Create</button>
+        </div>
+
+        <div id="note-editor" style="display: none;" class="mt-8">
+            <div id="password-section">
+                <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password:</label>
+                <div class="password-container">
+                    <input type="password" id="password" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4">
+                    <span class="toggle-password" onclick="togglePasswordVisibility()">👁️</span>
+                </div>
+                <div class="flex justify-center">
+                    <button id="decryptButton" onclick="loadAndDecryptNote()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl focus:outline-none focus:shadow-outline transition duration-300">Decrypt</button>
+                </div>
+                <p id="password-error" class="text-red-500 text-sm italic mt-2" style="display: none;">Incorrect password.</p>
+            </div>
+
+            <div id="note-content-section" style="display: none;">
+                <br>
+                <textarea id="noteContent" placeholder="Enter your note here..." class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-6 h-52"></textarea>
+                <br>
+                <div class="flex justify-between">
+                    <button id="saveButton" onclick="saveNote()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl focus:outline-none focus:shadow-outline transition duration-300">Save</button>
+                    <button id="deleteButton" onclick="deleteNote()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl focus:outline-none focus:shadow-outline transition duration-300">Delete</button>
+                </div>
+            </div>
+            <span id="status" class="block mt-4 text-gray-500 italic"></span>
+        </div>
+
+        <script>
+            const API_BASE_URL = '/api/notes/';
+
+            function togglePasswordVisibility() {
+                const passwordInput = document.getElementById("password");
+                const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+                passwordInput.setAttribute("type", type);
+            }
+
+            function showNoteEditor(isNewNote) {
+                document.getElementById("note-editor").style.display = "block";
+                if (isNewNote) {
+                    document.getElementById("password-section").style.display = "block";
+                    document.getElementById("note-content-section").style.display = "block";
+                } else {
+                    document.getElementById("password-section").style.display = "block";
+                    document.getElementById("note-content-section").style.display = "none";
+                }
+            }
+
+
+
+            function hideNoteEditor() {
+                document.getElementById("note-editor").style.display = "none";
+            }
+
+             function displayPasswordError() {
+                 document.getElementById("password-error").style.display = "block";
+             }
+
+             function hidePasswordError() {
+                 document.getElementById("password-error").style.display = "none";
+             }
+
+        </script>
+
+        <script src="{% static 'app.js' %}"></script>
+    </div>
+</body>
+</html>
