@@ -11,10 +11,13 @@ export default function Home() {
   };
 
   const handleGoToNote = () => {
-    if (noteName) {
+
+    if (noteName!="") {
       router.push(`/${noteName}`);
+    }else {
+      alert("Please enter name");
     }
-  };
+    };
 
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100">
@@ -34,26 +37,13 @@ export default function Home() {
       </nav>
 
       <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-4xl font-bold text-gray-200">
+        <h1 className="text-2xl sm:text-4xl font-bold text-gray-200">
           Welcome to Secure Note Taking App!
         </h1>
 
-        <p className="mt-3 text-2xl text-gray-300">
+        <p className="mt-3 text-xl sm:text-2xl text-gray-300">
           Your privacy is our priority.
         </p>
-
-        <div className="mt-6">
-          <p className="text-lg text-gray-400">
-            This is a secure note-taking application that allows you to create
-            and store notes with end-to-end encryption. Your notes are
-            protected with a password, ensuring that only you can access them.
-          </p>
-          <p className="mt-4 text-lg text-gray-400">
-            Simply create a note by entering a unique name below, set a
-            password, and start typing. Your note will be automatically saved
-            and encrypted.
-          </p>
-        </div>
 
         <div className="mt-10 flex">
           <input
@@ -70,19 +60,22 @@ export default function Home() {
             Go to Note
           </button>
         </div>
-      </main>
 
-      <footer className="flex items-center justify-center w-full h-24 border-t">
-        <a
-          className="flex items-center justify-center"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="h-4 ml-2" />
-        </a>
-      </footer>
+        <div className="mt-6 h-screen sm:h-auto">
+          <p className="text-lg  text-pretty h-auto text-gray-400 text-pretty ">
+            This is a secure note-taking application that allows you to create
+            and store notes with end-to-end encryption. Your notes are
+            protected with a password, ensuring that only you can access them.
+          </p>
+          <p className="mt-4 text-lg text-gray-400 text-pretty">
+            Simply create a note by entering a unique name below, set a
+            password, and start typing. Your note will be automatically saved
+            and encrypted.
+          </p>
+        </div>
+
+
+      </main>
     </div>
   );
 }
